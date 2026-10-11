@@ -1,15 +1,71 @@
-// valores possíveis de retorno: rock, paper ou scissors
-// entrada: o usuário deve clicar no botão
-// como escolher um dos valores...
-// ao dividir qualquer número por 3, o resto
-// sempre será 0, 1 ou 2
-// um valor é gerado pseudoaleatoriamente por math random
-// o valor é convertido para um inteiro positivo
-// esse valor é então divido por 3
-// se o resto da divisao for 0: retorna rock
-// se o resto for 1: retorna paper
-// se o resto for 2: retorna scissors
-// saída: um dos 3 valores é retornado
+// user clicks play button
+// for each round in a range of 5 rounds:
+//      game displays round n
+//      game prompts the user to choose between rock, paper and scissors
+//      game shows the result
+//      game increments the score of the winner
+//      if  any of the scores is equal to 3 breaks the loop
+// displays winners
+
+// user clicks playGame
+function playGame() {
+    const scores = {humanScore: 0, computerScore: 0}
+
+
+    for (let round = 1; round <= 5; round++) {
+        showFrame(`Round ${round}`, "black", "yellow")
+
+        const humanChoice = getHumanChoice()
+        const computerChoice = getComputerChoice()
+       
+        let result = playRound(humanChoice, computerChoice)
+
+        updateScores(result, scores)
+        displayRoundResult(result)
+
+        if (scores.humanScore === 3 || scores.computerScore === 3) {
+            break
+        }
+    }
+    
+
+    displayFinalResult(scores) 
+}
+
+function showFrame(text, textColor, backgroundColor) {
+    const frame = document.querySelector(".frame")
+
+    frame.textContent = text
+    frame.style.color = textColor
+    frame.style.backgroundColor = backgroundColor
+    frame.classList.add("frameActive")
+}
+
+function hideFrame() {
+    const frame = document.querySelector(".frame")
+
+    if (frame.classList.contains("frameActive")) {
+        frame.classList.remove("frameActive")
+    }
+}
+
+function displayRoundResult(result) {
+    if (result === "win") {
+        showFrame("YOU WIN!", "black", "green")
+        return
+    }
+
+    if (result === "lose") {
+        showFrame("YOU LOSE!", "black", "red")
+        return
+    }
+
+    showFrame("IT'S A TIE!", "black", "white")
+}
+
+function getHumanChoice() {
+    return prompt("Enter rock, scissors or paper").toLowerCase()
+}
 
 function chooseNumber() {
     const randomNumber = Math.random() * 100
@@ -28,134 +84,72 @@ function getOption(option) {
 }
 
 function getComputerChoice() {
-    const opcao = chooseNumber()
-
-    return getOption(opcao)
+    return getOption(chooseNumber())
 }
 
-function getHumanChoice() {
-    const opcao = prompt("Digite pedra, papel ou tesoura")
-
-    if (opcao === "pedra") {
-        return "rock"
+// does rock beat paper?
+function beats(choice1, choice2) {
+    if (choice1 === "rock" && choice2 === "scissors") {
+        return true
     }
 
-    if (opcao === "papel") {
-        return "paper"
+    if (choice1 === "paper" && choice2 === "rock") {
+        return true
     }
 
-    if (opcao === "tesoura") {
-        return "scissors"
+    if (choice1 === "scissors" && choice2 === "paper") {
+        return true
     }
 
+    return false
 }
-
-function hello() {
-    // clicou em jogar
-    // exibe na tela "pensando..."
-    // informa se ganhou ou perdeu
-    // mostra o score
-
-    const displayContainer = document.querySelector(".display")
-    const resultContainer = document.querySelector(".result")
-    const scoreDisplay = document.querySelector(".score")
-
-    resultContainer.textContent = "Pensando..."
-
-    const humanChoice = getHumanChoice()
-    const computerChoice = getComputerChoice()
-
-    let result = playRound(humanChoice, computerChoice)
-
-    if (result === 1) {
-        resultContainer.textContent = "VOCÊ GANHOU!"
-    }
-    else if (result === 0) {
-        resultContainer.textContent = "VOCÊ PERDEU!"
-        displayContainer.classList.add("lose")
-    }
-    else {
-        resultContainer.textContent = "EMPATOU!"
-    }
-
-    setTimeout(()=>{
-        // mostra o score
-        updateScores()
-        scoreDisplay.classList.add("showScore")
-    }, 1000)
-
-    //redefine após 3 segundos
-    setTimeout(()=>{
-        resultContainer.textContent = ""
-
-        if (displayContainer.classList.contains("lose")) {
-            displayContainer.classList.remove("lose")
-        }
-
-        scoreDisplay.classList.remove("showScore")
-    }, 3000)
-}
-
-function updateScores() {
-    const humanScoreElement = document.querySelector(".humanScore")
-    const computerScoreElement = document.querySelector(".computerScore")
-
-    humanScoreElement.textContent = humanScore
-    computerScoreElement.textContent = computerScore
-}
-
-humanScore = 0
-computerScore = 0
-
-updateScores()
-
 
 function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toLowerCase()
-    computerChoice = computerChoice.toLowerCase()
-
-    // pedra + pedra = nulo
-    // papel + papel = nulo
-    // tesoura + tesoura = nulo
-    // pedra + papel = papel
-    // pedra + tesoura = pedra
-    // tesoura + papel = tesoura
-
     if (humanChoice === computerChoice) {
-        return -1
-    }
-    
-    // human wins
-    if (humanChoice === "rock" && computerChoice === "scissors") {
-        humanScore++;
-        return 1
+        return "tie"
     }
 
-    if (humanChoice === "paper" && computerChoice === "rock") {
-        humanScore++;
-        return 1
+    if (beats(humanChoice, computerChoice)) {
+        return "win"
     }
 
-    if (humanChoice === "scissors" && computerChoice === "paper") {
-        humanScore++;
-        return 1
-    }
-
-    // computer wins
-    if (computerChoice === "rock" && humanChoice === "scissors") {
-        computerScore++;
-        return 0
-    }
-
-    if (computerChoice === "paper" && humanChoice === "rock") {
-        computerScore++;
-        return 0
-    }
-
-    if (computerChoice === "scissors" && humanChoice === "paper") {
-        computerScore++;
-        return 0
-    }
+    return "lose"
 }
+
+function updateScores(roundResult, scores) {
+    if (roundResult === "tie") {
+        return
+    }
+
+    if (roundResult === "win") {
+        scores.humanScore++
+        return
+    }
+
+    scores.computerScore++
+}
+
+function displayFinalResult(scores) {
+    const scoresFrame = document.querySelector(".scores")
+    const scoresTitle = document.querySelector(".scoreTitle")
+    const humanScoreSpan = document.querySelector(".humanScore")
+    const computerScoreSpan = document.querySelector(".computerScore")
+
+    hideFrame()
+
+    if (scores.humanScore > scores.computerScore) {
+        scoresTitle.textContent = "YOU WIN THE GAME"
+    } 
+    else {
+        scoresTitle.textContent = "YOU LOSE THE GAME"
+    }
+
+    humanScoreSpan.textContent = scores.humanScore
+    computerScoreSpan.textContent = scores.computerScore
+
+    scoresFrame.classList.add("frameActive")
+}
+
+
 
 

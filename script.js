@@ -8,12 +8,16 @@
 // displays winners
 
 // user clicks playGame
-function playGame() {
+async function playGame() {
+    const playBtn = document.querySelector("#playBtn")
     const scores = {humanScore: 0, computerScore: 0}
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
+    playBtn.disabled = true
 
     for (let round = 1; round <= 5; round++) {
         showFrame(`Round ${round}`, "black", "yellow")
+        await sleep(1000)
 
         const humanChoice = getHumanChoice()
         const computerChoice = getComputerChoice()
@@ -22,14 +26,20 @@ function playGame() {
 
         updateScores(result, scores)
         displayRoundResult(result)
+        await sleep(2000)
 
         if (scores.humanScore === 3 || scores.computerScore === 3) {
             break
         }
+
+        setTimeout(()=>{return}, 1000)
     }
     
 
     displayFinalResult(scores) 
+    await sleep(3000)
+    hideFrame(".scores")
+    playBtn.disabled = false
 }
 
 function showFrame(text, textColor, backgroundColor) {
@@ -41,8 +51,8 @@ function showFrame(text, textColor, backgroundColor) {
     frame.classList.add("frameActive")
 }
 
-function hideFrame() {
-    const frame = document.querySelector(".frame")
+function hideFrame(className) {
+    const frame = document.querySelector(className)
 
     if (frame.classList.contains("frameActive")) {
         frame.classList.remove("frameActive")
@@ -51,7 +61,7 @@ function hideFrame() {
 
 function displayRoundResult(result) {
     if (result === "win") {
-        showFrame("YOU WIN!", "black", "green")
+        showFrame("YOU WIN!", "black", "greenyellow")
         return
     }
 
@@ -135,7 +145,7 @@ function displayFinalResult(scores) {
     const humanScoreSpan = document.querySelector(".humanScore")
     const computerScoreSpan = document.querySelector(".computerScore")
 
-    hideFrame()
+    hideFrame(".frame")
 
     if (scores.humanScore > scores.computerScore) {
         scoresTitle.textContent = "YOU WIN THE GAME"
@@ -149,7 +159,3 @@ function displayFinalResult(scores) {
 
     scoresFrame.classList.add("frameActive")
 }
-
-
-
-

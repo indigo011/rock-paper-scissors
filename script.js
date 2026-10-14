@@ -166,11 +166,13 @@ function displayFinalResult(scores) {
 
 	hideFrame('.frame');
 
-	if (scores.humanScore > scores.computerScore) {
-		scoresTitle.textContent = 'VOCÊ GANHOU O JOGO';
-	} else {
-		scoresTitle.textContent = 'VOCÊ PERDEU O JOGO';
-	}
+	scoresTitle.textContent = 'SCORE';
+
+	// if (scores.humanScore > scores.computerScore) {
+	// 	scoresTitle.textContent = 'VOCÊ GANHOU O JOGO';
+	// } else {
+	// 	scoresTitle.textContent = 'VOCÊ PERDEU O JOGO';
+	// }
 
 	humanScoreSpan.textContent = scores.humanScore;
 	computerScoreSpan.textContent = scores.computerScore;

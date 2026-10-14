@@ -99,8 +99,8 @@ body {
 /* ROUND BUTTONS */
 
 .btns-container {
-	width: 60%;
 	display: flex;
+	width: 60%;
 	gap: 30px;
 	margin-top: 50px;
 }
@@ -152,6 +152,8 @@ body {
 	&:active {
 		background-color: greenyellow;
 	}
+}
 
+.btn-off {
 	display: none;
 }

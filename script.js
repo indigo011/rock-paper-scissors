@@ -3,11 +3,17 @@ const paperBtn = document.querySelector('#paperBtn');
 const scissorsBtn = document.querySelector('#scissorsBtn');
 const btnsContainer = document.querySelector('.btns-container');
 
+const playBtn = document.querySelector('.playBtn');
+playBtn.addEventListener('click', () => {
+	playBtn.classList.toggle('btn-off');
+	btnsContainer.classList.toggle('btn-off');
+});
+
 const scores = { humanScore: 0, computerScore: 0 };
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function roundAnimation() {
-	const frames = ['ROCK', 'PAPER', 'SCISSORS', 'GO!'];
+	const frames = ['PEDRA', 'PAPEL', 'TESOURA', 'VAI!'];
 
 	const lastIndex = frames.length - 1;
 
@@ -32,6 +38,7 @@ async function startGame(event) {
 	if (!btn) return;
 
 	let humanChoice = btn.value;
+	btnsContainer.classList.toggle('btn-off');
 
 	// rock, paper, scissors, go!
 	await roundAnimation();
@@ -40,11 +47,12 @@ async function startGame(event) {
 
 	updateScores(result, scores);
 	displayRoundResult(result);
-	await sleep(2000);
+	await sleep(1500);
 
 	displayFinalResult(scores);
-	await sleep(3000);
+	await sleep(2000);
 	hideFrame('.scores');
+	btnsContainer.classList.toggle('btn-off');
 }
 
 btnsContainer.addEventListener('click', startGame);
@@ -68,16 +76,16 @@ function hideFrame(className) {
 
 function displayRoundResult(result) {
 	if (result === 'win') {
-		showFrame('YOU WIN!', 'black', 'greenyellow');
+		showFrame('VOCÊ GANHOU!', 'black', 'greenyellow');
 		return;
 	}
 
 	if (result === 'lose') {
-		showFrame('YOU LOSE!', 'black', 'red');
+		showFrame('VOCÊ PERDEU!', 'black', 'red');
 		return;
 	}
 
-	showFrame("IT'S A TIE!", 'black', 'white');
+	showFrame('EMPATE!', 'black', 'white');
 }
 
 function getHumanChoice() {
@@ -159,9 +167,9 @@ function displayFinalResult(scores) {
 	hideFrame('.frame');
 
 	if (scores.humanScore > scores.computerScore) {
-		scoresTitle.textContent = 'YOU WIN THE GAME';
+		scoresTitle.textContent = 'VOCÊ GANHOU O JOGO';
 	} else {
-		scoresTitle.textContent = 'YOU LOSE THE GAME';
+		scoresTitle.textContent = 'VOCÊ PERDEU O JOGO';
 	}
 
 	humanScoreSpan.textContent = scores.humanScore;

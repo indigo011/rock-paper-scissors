@@ -4,6 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap"
+			rel="stylesheet"
+		/>
 		<title>Rock, paper and scissors</title>
 	</head>
 	<body>
@@ -13,11 +19,25 @@
 				<h1 class="scoreTitle">VOCÊ PERDEU</h1>
 				<div>
 					<p>Você: <span class="humanScore">0</span></p>
-					<p>Computador: <span class="computerScore">0</span></p>
+					<p>Computador: <span class="computerScore">1</span></p>
 				</div>
 			</div>
+			<p>Rock, paper, scissors, GO!</p>
 		</div>
-		<button class="main-btn" onclick="playGame()" id="playBtn">Play</button>
+
+		<div class="btns-container">
+			<button id="rockBtn" value="rock">
+				<img src="./assets/rock-icon.png" alt="" />
+			</button>
+			<button id="paperBtn" value="paper">
+				<img src="./assets/paper.png" alt="" />
+			</button>
+			<button id="scissorsBtn" value="scissors">
+				<img src="./assets/scissors.png" alt="" />
+			</button>
+		</div>
+
+		<button class="playBtn">Play</button>
 		<script src="script.js"></script>
 	</body>
 </html>
